@@ -5,7 +5,7 @@
   "license": "MIT",
   "description": "Lib Sodium port for node.js",
   "dependencies": {
-    "nan": "^2.0.9"
+    "nan": "2"
   },
   "devDependencies": {
     "istanbul": ">=0.2.6",
@@ -33,10 +33,5 @@
     "unique",
     "stamp"
   ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://opensource.org/licenses/mit-license.php"
-    }
-  ]
+  "license": "MIT"
 }
