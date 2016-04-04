@@ -8,7 +8,7 @@ configure:
 	@cd $(LIBSODIUM_DIR)/ && ./autogen.sh
 	@cd $(LIBSODIUM_DIR)/ && ./configure
 	@node defines.js
-	
+
 
 sodium:
     ifeq (,$(wildcard deps/libsodium.gyp))
@@ -16,7 +16,7 @@ sodium:
 	@make configure
     endif
 	$(BINDIR)/node-gyp rebuild
-	
+
 test: test-unit
 
 test-unit:
@@ -45,12 +45,7 @@ git-pull:
 	git submodule status
 
 clean:
-	-rm -fr lib-cov
-	-rm -fr covershot
-	-rm -fr html-report
-	-rm -fr coverage
-	-rm -fr coverage.html
-	-rm -fr *.o
+	-rm -fr node_modules build lib-cov covershot html-report coverage coverage.html *.o
 
 all:
 	sodium
