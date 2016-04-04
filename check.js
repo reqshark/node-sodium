@@ -1,1 +1,1 @@
-console.log(require('./').test())
+console.log(require('./').nstr())

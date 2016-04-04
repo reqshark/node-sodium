@@ -31,11 +31,23 @@ extern "C" {
 
 #include "ref.h"
 
-NAN_METHOD(test){
-  if (sodium_init() == -1)
-    abort();
-  printf("Using libsodium %s\nGenerating nonces..\n", sodium_version_string());
-  printf("test pass\n");
+#define MAX_INPUT_LEN 4096
+
+static unsigned char *nonce[crypto_box_NONCEBYTES];
+static char nhex[crypto_box_NONCEBYTES * 2 + 1];
+
+/* nbuf uses a pointer kept back in the binding */
+static char *nbuf() {
+  size_t sz = crypto_box_NONCEBYTES;
+  randombytes_buf(&nonce, sz);
+  sodium_bin2hex(nhex, sz * 2 + 1, (unsigned char *)nonce, sz);
+  return nhex;
+}
+
+/* return a nonce hex to node */
+NAN_METHOD(nstr){
+  char *n = nbuf();
+  info.GetReturnValue().Set(New(n).ToLocalChecked());
 }
 
 #define EXPORT_METHOD(C, S)                                                    \
@@ -45,7 +57,10 @@ NAN_METHOD(test){
 NAN_MODULE_INIT(Init) {
   HandleScope scope;
 
-  EXPORT_METHOD(target, test);
+  if (sodium_init() == -1)
+    abort();
+
+  EXPORT_METHOD(target, nstr);
 }
 
 NODE_MODULE(sodium, Init)
